@@ -1,0 +1,64 @@
+/* Azul Escuro - Header: #0d1044 
+Height - Altura
+Width - Largura         */
+@import url(./fonts.css);
+
+body{
+    margin: 0;
+    font-family: GlacialIndifference;
+    background-color: #25252c;
+}
+
+.background{
+    background-image: url(../assets/img/background.jpg);
+    margin: 0 auto;
+    width: 100%;
+    height: 87vh;
+    background-size: cover;
+    background-repeat: no-repeat;
+    filter: brightness(0.4) blur(5px);
+}
+
+header{
+    background-color: #0d1044;
+    height: 12vh;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: #1d74b6 0.8vh solid;
+    clear: both;
+    overflow: auto;
+    color: #fff;
+    flex-wrap: wrap;
+}
+
+.noisyarch-logo{
+    margin-left: 3vw;
+    height: 4vw;
+    object-fit: contain;
+}
+a{
+    color: #fff;
+    font-size: 1.4vw;
+    text-decoration: none;
+}
+a:hover{
+    color: #3ca7eb;
+    cursor: pointer;
+}
+
+.here{
+    color: #3ca7eb;
+}
+
+.here:hover{
+    color: #fff;
+}
+
+.header-menu{
+    margin-right: 6vw;
+    width: 26.5vw;
+    display: flex;
+    justify-content: space-between;
+}

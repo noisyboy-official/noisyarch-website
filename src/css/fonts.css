@@ -1,0 +1,12 @@
+@font-face {
+    font-family: GlacialIndifference;
+    src: url(../assets/fonts/GlacialIndifference-Regular.otf);
+}
+@font-face {
+    font-family: GlacialBold;
+    src: url(../assets/fonts/GlacialIndifference-Bold.otf);
+}
+@font-face {
+    font-family: GlacialItalic;
+    src: url(../assets/fonts/GlacialIndifference-Italic.otf);
+}
