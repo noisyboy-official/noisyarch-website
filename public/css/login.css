@@ -1,0 +1,15 @@
+.login-container{
+    background-color: #000000b7;
+    margin: 13vh auto;
+    width: 20vw;
+    height: 45vh;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-between;
+    border-radius: 1vh;
+    padding: 5vh;
+    overflow: auto;
+    text-align: justify;
+}

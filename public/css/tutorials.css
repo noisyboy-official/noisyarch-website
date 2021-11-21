@@ -1,0 +1,26 @@
+.container img{
+    width: 70%;
+    border-radius: 0.5vh;
+    align-self: center;
+    margin: 0 auto;
+}
+
+.container img:hover{
+    transform: none;
+}
+
+.subtitle{
+    color: #0cc505;
+    font-size: xx-large;
+}
+
+.container .intro{
+    margin-top: 0;
+}
+
+.command{
+    color: #07b0e4;
+    background-color: #9c949460;
+    padding: 1.5vh;
+    border-radius: 0.8vh;
+}

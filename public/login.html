@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NoisyArch</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="icon" href="./assets/favicon/favicon.ico">
+    <script src="./js/index.js"></script>
+</head>
+<body>
+    <header>
+        <img src="./assets/img/noisyarch-logo.png" alt="noisyarch-logo" class="noisyarch-logo">
+        <form class="header-menu">
+            <a class="menu" href="./index.html">Inicio</a>
+            <a class="menu" href="./community.html">Comunidade</a>
+            <a class="menu" href="https://archlinux.org/" target="_blank">ArchLinux</a>
+        </form>
+        <form class="header-buttons">
+            <a class="option" href="./login.html">Login</a>
+            <a class="option" href="./register.html">Cadastro</a>
+        </form>
+    </header>
+
+    <div class="floating-container">
+        <h2 class="saiba_mais">Faça o login:</h2>
+        <input id="ipt_email" type="text" placeholder="Digite seu email">
+        <input id="ipt_senha" type="password" placeholder="Digite sua senha">
+        <div class="floating-container-buttons">
+            <button onclick="entrar()" class="option">Entrar</button>
+        </div>
+    </div>
+</body>
+</html>
+<script>
+        function entrar() {
+        var emailVar = ipt_email.value;
+        var senhaVar = ipt_senha.value;
+
+        console.log("FORM LOGIN: ", emailVar);
+        console.log("FORM SENHA: ", senhaVar);
+
+        // TODO: VERIFICAR AS VALIDAÇÕES QUE ELES ESTÃO APRENDENDO EM ALGORITMOS 
+        if (emailVar == "" || senhaVar == "") {
+            window.alert("Preencha todos os campos para prosseguir!");
+            return false;
+        }
+
+        if (emailVar.indexOf("@") == -1 || emailVar.indexOf(".com") == -1) {
+            window.alert("Ops, e-mail inválido! Verifique e tente novamente.");
+            return false;
+        }
+
+        fetch("/usuarios/autenticar", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                emailServer: emailVar,
+                senhaServer: senhaVar
+            })
+        }).then(function (resposta) {
+            console.log("ESTOU NO THEN DO entrar()!")
+
+            if (resposta.ok) {
+                window.location = './pages/community.html';
+            } else {
+                window.alert('Login inválido!')
+                console.log("Login invalido!");
+            }
+
+        }).catch(function (erro) {
+            console.log(erro);
+        })
+
+        return false;
+    }
+</script>

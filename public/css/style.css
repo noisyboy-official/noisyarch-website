@@ -63,7 +63,7 @@ a:hover{
 .option{
     background-color: #0586d6;
     color: #fff;
-    border-radius: 1.9vh;
+    border-radius: 0.6vh;
     border: none;
     font-weight: bold;
     padding: 1vh 2vh;
@@ -79,6 +79,7 @@ a:hover{
 }
 
 .header-buttons{
+    margin-bottom: 0.5vh;
     margin-left: 5vh;
     width: 20vw;
 }
@@ -88,6 +89,15 @@ a:hover{
     width: 20.5vw;
     display: flex;
     justify-content: space-between;
+}
+
+.logged{
+    font-size: large;
+}
+
+.logged:hover{
+    color: #ffffff;
+    cursor: default;
 }
 
 .cadastro:hover{
@@ -147,14 +157,81 @@ hr{
     color: #fff;
     font-size: xx-large;
 }
+
+.noisyboy{
+    color: #fff;
+    font-size: xx-large;
+}
+
+.noisyboy:hover{
+    color: #0cc505;
+}
+
 .arch{
     color: #097dc5;
+}
+
+.saiba_mais{
+    color: #079fce;
 }
 
 .interface{
     color: #0cc505;
 }
 
+.title{
+    color: #0cc505;
+}
+
 .footer{
     margin-top: 5vh;
+}
+
+.floating-container{
+    background-color: #000000b7;
+    margin: 13vh auto;
+    width: 17vw;
+    height: 42vh;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: space-evenly;
+    flex-direction: column;
+    border-radius: 1vh;
+    padding: 5vh;
+    overflow: hidden;
+    text-align: justify;
+}
+
+.floating-container input{
+    height: 6%;
+    width: 65%;
+    border-radius: 0.6vh;
+    border: none;
+    outline: none;
+    padding: 1vh;
+}
+
+.floating-container input::placeholder{
+    color: #000000;
+}
+
+.floating-container .option{
+    height: 4.5vh;
+    width: 7.9vw;
+    padding: 1.6vh 3vh;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.floating-container-buttons{
+    width: 70%;
+    border-radius: 0.6vh;
+    display: flex;
+    justify-content: right;
+    text-align: right;
+    padding: 0;
+    margin: 0;
 }

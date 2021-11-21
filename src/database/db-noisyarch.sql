@@ -1,0 +1,16 @@
+CREATE DATABASE NoisyArch;
+USE NoisyArch;
+
+CREATE TABLE Usuario(
+	id INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(45),
+    email VARCHAR(60) UNIQUE,
+    senha VARCHAR(32)
+);
+
+SELECT * FROM USUARIO;
+/*
+CREATE TABLE Distro(
+	id 
+);
+*/
