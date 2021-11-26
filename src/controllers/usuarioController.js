@@ -25,6 +25,7 @@ function listar(req, res) {
 }
 
 function entrar(req, res) {
+    var distro = req.body.distroServer;
     var email = req.body.emailServer;
     var senha = req.body.senhaServer;
 
@@ -64,6 +65,7 @@ function cadastrar(req, res) {
     var nome = req.body.nomeServer;
     var email = req.body.emailServer;
     var senha = req.body.senhaServer;
+    var distro = req.body.distroServer;
 
     if (nome == undefined) {
         res.status(400).send("Seu nome está undefined!");
@@ -73,7 +75,7 @@ function cadastrar(req, res) {
         res.status(400).send("Sua senha está undefined!");
     } else {
         
-        usuarioModel.cadastrar(nome, email, senha)
+        usuarioModel.cadastrar(nome, email, senha, distro)
             .then(
                 function (resultado) {
                     res.json(resultado);

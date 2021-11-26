@@ -7,9 +7,10 @@
     <title>NoisyArch - Inicio</title>
     <link rel="stylesheet" href="../css/style.css">
     <link rel="icon" href="../assets/favicon/favicon.ico">
-    <script src="../js/index.js"></script>
+    <script src="../js/logged.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body>
+<body onload="verify_login(); metricas()">
     <header>
         <img src="../assets/img/noisyarch-logo.png" alt="noisyarch-logo" class="noisyarch-logo">
         <form class="header-menu">
@@ -18,30 +19,181 @@
             <a class="menu" href="https://archlinux.org/" target="_blank">ArchLinux</a>
         </form>
         <form class="header-buttons">
-            <a class="option" href="../login.html">Sair</a>
-            <a class="logged">Logado</a>
+            <a class="option" onclick="logout()">Sair</a>
+            <a class="logged">
+                <span class="saiba_mais">Bem-vindo, </span>
+                <span id="spn_name"></span>
+            </a>
         </form>
     </header>
 
     <div class="container">
         <h1 class="title">Bem-vindo ao <b class="noisy">Noisy</b><b class="arch">Arch!</b></h1>
         <h1 class="arch">A comunidade <b class="noisy">Linux</b> da liberdade.</h1>
-        <hr><h2 class="intro">
+        <hr>
+            <h2 class="intro">
                 Esta comunidade destina-se a ajudar você a instalar e configurar a distribuição Arch Linux  em seu Computador. 
                 tudo isto trabalhando a partir da linha de comando, mas isso não exige que você seja um especialista. 
                 Aprendemos muito fazendo e se você quiser saber mais sobre como o linux opera, 
                 o Arch Linux é uma excelente opção por muitas razões.
             </h2>
-        <hr><h2 class="interface">Deepin Desktop Environment</h2>
+            <h1 class="arch">Quantidade de pessoas por interface</h1>
+            <br><br>
+            <section class="dash">
+                <canvas id="myChart"></canvas>
+            </section>
+            <br><br>
+        <hr><h2 class="interface">Deepin Desktop Environment - <b id="metrica_deepin">0</b> Utilizam</h2>
         <img src="../assets/img/deepin-arch.png" onclick="deepin()" alt="deepin-arch-theme">
-        <br><hr><h2 class="interface">i3-gaps</h2>
+        <br><hr><h2 class="interface">i3-gaps - <b id="metrica_i3wm">0</b> Utilizam</h2>
         <img src="../assets/img/blur-arch.png" alt="blue-i3wm-arch-theme">
-        <br><hr><h2 class="interface">Cinnamon</h2>
+        <br><hr><h2 class="interface">Cinnamon - <b id="metrica_cinnamon">0</b> Utilizam</h2>
         <img src="../assets/img/cinnamon-arch.jpg" alt="cinnamon-arch-theme">
-        <br><hr><h2 class="interface">i3wm</h2>
+        <br><hr><h2 class="interface">i3wm - <b id="metrica_XFCE">0</b> Utilizam</h2>
         <img src="../assets/img/blue-arch.jpg" alt="blue-i3wm-arch-theme">
         <br><hr><h1 class="footer"><b class="arch">developed by</b> 
         <b><a class="noisyboy" href="https://github.com/noisyboy-official" target="_blank">noisyboy</a></b></h1>
     </div>
 </body>
 </html>
+<script>
+    var quantidadeDeepin;
+    var quantidadeCinnamon;
+    var quantidadei3wm;
+    var quantidadeXFCE;
+    var distro = [];
+
+    function metricas(){
+    fetch("/metrica/listarMetricaDeepin").then(function(resposta){
+        if(resposta.ok){
+            if(resposta.status = 204){
+                var metrica_deepin = document.getElementById('metrica_deepin');
+                metrica_deepin.innerHTML = "";
+            } 
+            resposta.json().then(function (resposta){
+                console.log("Dados recebidos: ", JSON.stringify(resposta))
+                for(let contador = 0; contador<resposta.length; contador++){
+                    console.log(resposta[contador].distros)
+                    var metrica = JSON.stringify(resposta[contador].distros);
+                    metrica_deepin.innerHTML = metrica;
+                    quantidadeDeepin = Number(metrica);
+                }
+            })   
+            
+        }else{
+            throw ('Houve um erro na API!')
+        }
+    }).catch(function (resposta){
+        console.error(resposta);
+    });
+
+    fetch("/metrica/listarMetricaCinnamon").then(function(resposta){
+        if(resposta.ok){
+            if(resposta.status = 204){
+                var metrica_cinnamon = document.getElementById('metrica_cinnamon');
+                metrica_cinnamon.innerHTML = "";
+            } 
+            resposta.json().then(function (resposta){
+                console.log("Dados recebidos: ", JSON.stringify(resposta))
+                for(let contador = 0; contador<resposta.length; contador++){
+                    console.log(resposta[contador].distros)
+                    var metrica = JSON.stringify(resposta[contador].distros);
+                    metrica_cinnamon.innerHTML = metrica;
+                    quantidadeCinnamon = Number(metrica);
+                }
+            })   
+            
+        }else{
+            throw ('Houve um erro na API!')
+        }
+    }).catch(function (resposta){
+        console.error(resposta);
+    });
+
+    fetch("/metrica/listarMetricai3wm").then(function(resposta){
+        if(resposta.ok){
+            if(resposta.status = 204){
+                var metrica_i3wm = document.getElementById('metrica_i3wm');
+                metrica_i3wm.innerHTML = "";
+            } 
+            resposta.json().then(function (resposta){
+                console.log("Dados recebidos: ", JSON.stringify(resposta))
+                for(let contador = 0; contador<resposta.length; contador++){
+                    console.log(resposta[contador].distros)
+                    var metrica = JSON.stringify(resposta[contador].distros);
+                    metrica_i3wm.innerHTML = metrica;
+                    quantidadei3wm = Number(metrica);
+                }
+            })   
+            
+        }else{
+            throw ('Houve um erro na API!')
+        }
+    }).catch(function (resposta){
+        console.error(resposta);
+    });
+    
+    fetch("/metrica/listarMetricaXFCE").then(function(resposta){
+        if(resposta.ok){
+            if(resposta.status = 204){
+                var metrica_XFCE = document.getElementById('metrica_XFCE');
+                metrica_XFCE.innerHTML = "";
+            } 
+            resposta.json().then(function (resposta){
+                console.log("Dados recebidos: ", JSON.stringify(resposta))
+                for(let contador = 0; contador<resposta.length; contador++){
+                    console.log(resposta[contador].distros)
+                    var metrica = JSON.stringify(resposta[contador].distros);
+                    metrica_XFCE.innerHTML = metrica;
+                    quantidadeXFCE = Number(metrica);
+                    var ctx = document.getElementById('myChart');
+                    var myChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Deepin', 'i3-gaps', 'Cinnamon', 'XFCE'],
+                            datasets: [{
+                                label: 'Quantidade',
+                                data: [quantidadeDeepin, quantidadei3wm, quantidadeCinnamon, quantidadeXFCE],
+                                backgroundColor: [
+                                    'rgba(12, 197, 5, 0.2)',
+                                    'rgba(54, 162, 235, 0.2)',
+                                    'rgba(12, 197, 5, 0.2)',
+                                    'rgba(54, 162, 235, 0.2)'
+                                ],
+                                borderColor: [
+                                    'rgba(12, 197, 5, 1)',
+                                    'rgba(54, 162, 235, 1)',
+                                    'rgba(12, 197, 5, 1)',
+                                    'rgba(54, 162, 235, 1)'
+                                ],
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                        maintainAspectRatio: true,
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    ticks:{
+                                        color: '#ffffff'
+                                    }
+                                },
+                                x:{
+                                    ticks:{
+                                        color: '#ffffff'
+                                    }
+                                }
+                            }
+                        }
+                        });
+                                }
+            })   
+            
+        }else{
+            throw ('Houve um erro na API!')
+        }
+    }).catch(function (resposta){
+        console.error(resposta);
+    });
+}
+</script>

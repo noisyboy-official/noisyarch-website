@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="./css/style.css">
     <link rel="icon" href="./assets/favicon/favicon.ico">
     <script src="./js/index.js"></script>
+    <script src="./js/login.js"></script>
 </head>
 <body>
     <header>
@@ -33,48 +34,3 @@
     </div>
 </body>
 </html>
-<script>
-        function entrar() {
-        var emailVar = ipt_email.value;
-        var senhaVar = ipt_senha.value;
-
-        console.log("FORM LOGIN: ", emailVar);
-        console.log("FORM SENHA: ", senhaVar);
-
-        // TODO: VERIFICAR AS VALIDAÇÕES QUE ELES ESTÃO APRENDENDO EM ALGORITMOS 
-        if (emailVar == "" || senhaVar == "") {
-            window.alert("Preencha todos os campos para prosseguir!");
-            return false;
-        }
-
-        if (emailVar.indexOf("@") == -1 || emailVar.indexOf(".com") == -1) {
-            window.alert("Ops, e-mail inválido! Verifique e tente novamente.");
-            return false;
-        }
-
-        fetch("/usuarios/autenticar", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                emailServer: emailVar,
-                senhaServer: senhaVar
-            })
-        }).then(function (resposta) {
-            console.log("ESTOU NO THEN DO entrar()!")
-
-            if (resposta.ok) {
-                window.location = './pages/community.html';
-            } else {
-                window.alert('Login inválido!')
-                console.log("Login invalido!");
-            }
-
-        }).catch(function (erro) {
-            console.log(erro);
-        })
-
-        return false;
-    }
-</script>

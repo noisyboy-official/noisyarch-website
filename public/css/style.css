@@ -66,7 +66,7 @@ a:hover{
     border-radius: 0.6vh;
     border: none;
     font-weight: bold;
-    padding: 1vh 2vh;
+    padding: 1vh 3vh;
     margin-right: 2.25vh;
     font-size: 80%;
     overflow: hidden;
@@ -92,7 +92,7 @@ a:hover{
 }
 
 .logged{
-    font-size: large;
+    font-size: 2.2vh;
 }
 
 .logged:hover{
@@ -190,8 +190,8 @@ hr{
 .floating-container{
     background-color: #000000b7;
     margin: 13vh auto;
-    width: 17vw;
-    height: 42vh;
+    width: 19vw;
+    height: 44vh;
     display: flex;
     text-align: center;
     align-items: center;
@@ -204,12 +204,28 @@ hr{
 }
 
 .floating-container input{
+    background-color: #ffffffd7;
     height: 6%;
     width: 65%;
     border-radius: 0.6vh;
     border: none;
     outline: none;
     padding: 1vh;
+}
+
+.floating-container select{
+    background-color: #ffffffd7;
+    height: 10%;
+    width: 70.5%;
+    border-radius: 0.6vh;
+    border: none;
+    outline: none;
+    color: #000000;
+}
+
+select::after{
+    background-color: #ffffffd7;
+    border-radius: 1vh;
 }
 
 .floating-container input::placeholder{
@@ -234,4 +250,9 @@ hr{
     text-align: right;
     padding: 0;
     margin: 0;
+}
+
+.dash{
+    width: 40vw;
+    height: 60vh;
 }

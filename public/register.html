@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="./css/style.css">
     <link rel="icon" href="./assets/favicon/favicon.ico">
     <script src="./js/index.js"></script>
+    <script src="./js/register.js"></script>
 </head>
 <body>
     <header>
@@ -25,77 +26,20 @@
 
     <div class="floating-container">
         <h2 class="saiba_mais">Faça seu cadastro:</h2>
-        <input id="ipt_nome" type="text" placeholder="Digite seu nome">
-        <input id="ipt_email" type="text" placeholder="Digite seu email">
-        <input id="ipt_senha" type="password" placeholder="Digite sua senha">
-        <input id="ipt_confirmacao" type="password" placeholder="Confirme sua senha">
+        <input id="ipt_nome" type="text" placeholder="Digite seu nome*">
+        <select name="Distros" id="slc_distro">
+            <option value="1">Selecione uma interface</option>
+            <option value="2">Deepin</option>
+            <option value="3">Cinnamon</option>
+            <option value="4">i3-gaps</option>
+            <option value="5">XFCE</option>
+        </select>
+        <input id="ipt_email" type="text" placeholder="Digite seu email*">
+        <input id="ipt_senha" type="password" placeholder="Digite sua senha*">
+        <input id="ipt_confirmacao" type="password" placeholder="Confirme sua senha*">
         <div class="floating-container-buttons">
-            <button onclick="cadastrar()" class="option">Fazer Cadastro</button>
+            <button onclick="cadastrar()" class="option">Cadastrar</button>
         </div>
     </div>
 </body>
 </html>
-<script>
-    function cadastrar() {
-        var nomeVar = ipt_nome.value;
-        var emailVar = ipt_email.value;
-        var senhaVar = ipt_senha.value;
-        var confirmacaoSenhaVar = ipt_confirmacao.value;
-
-        if (nomeVar == "" || emailVar == "" || senhaVar == "" || confirmacaoSenhaVar == "") {
-
-            window.alert("Preencha todos os campos para prosseguir!");
-            if (nomeVar == "") {
-                console.log('nome está em branco')
-            }
-            if (emailVar == "") {
-                console.log('email está em branco')
-            }
-            if (senhaVar == "") {
-                console.log('senha está em branco')
-            }
-            if (confirmacaoSenhaVar == "") {
-                console.log('confirmacaoSenha está em branco')
-            }
-            return false;
-        }
-
-        if (emailVar.indexOf("@") == -1 || emailVar.indexOf(".com") == -1) {
-            window.alert("Ops, e-mail inválido! Verifique e tente novamente.");
-            return false;
-        }
-
-        if (senhaVar != confirmacaoSenhaVar) {
-            window.alert("As senhas inseridas devem ser iguais para prosseguir!");
-            return false;
-        }
-
-        fetch("/usuarios/cadastrar", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                nomeServer: nomeVar,
-                emailServer: emailVar,
-                senhaServer: senhaVar
-            })
-        }).then(function (resposta) {
-
-            console.log("resposta: ", resposta);
-
-            if (resposta.ok) {
-                window.alert("Cadastro realizado com sucesso!");
-                window.location = "login.html";
-                limparFormulario();
-            } else {
-                alert('Este email já está cadastrado!')
-                throw ("Houve um erro ao tentar realizar o cadastro!");
-            }
-        }).catch(function (resposta) {
-            console.log(`#ERRO: ${resposta}`);
-        });
-
-        return false;
-    }
-</script>
