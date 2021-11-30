@@ -16,7 +16,7 @@
         <form class="header-menu">
             <a class="menu" href="../../index.html">Inicio</a>
             <a class="here" href="../../community.html">Comunidade</a>
-            <a class="menu" href="https://archlinux.org/" target="_blank">ArchLinux</a>
+            <a class="menu" href="https://archlinux.org/" target="_blank">Arch Linux</a>
         </form>
         <form class="header-buttons">
             <a class="option" href="../../login.html">Login</a>
@@ -25,9 +25,304 @@
     </header>
 
     <div class="container">
-        <h1 class="title">Guia de instalação - <b class="noisy">Arch Linux</b></h1>
-        <hr>
-        <br><hr><h1 class="footer"><b class="arch">developed by</b> 
+        <h1 class="title">Guia de instalação - <b class="noisy">Arch Linux</b> - Parte 1</h1>
+        <br>
+        <hr><br>
+        <h2 class="intro">
+            Atenção: Caso você queria instalar via UEFI, os comandos estão com o simbolo <span class="saiba_mais">◎</span>, caso for instalar via Legacy (BIOS)
+            apenas ignore. 
+            <br><br>
+            1 - Faça o download do Arch Linux <a class="here" href="https://archlinux.org/download/" target="_blank">(Download Arch)</a>
+            <br><br>
+            2 - Crie um pendrive bootavel <a class="here" href="https://www.balena.io/etcher/" target="_blank">(Download Etcher)</a>
+            <br><br><hr><br>
+            <span class="here"><span class="saiba_mais">◎</span> Verifique o modo de inicialização: (UEFI)</span>
+            <br><br>
+            <span class="command">efivar -l</span>
+            <br><br>
+            Se este comando listar as variáveis EFI, isso significa que você iniciou a operação com sucesso no modo EFI. 
+            Caso contrário, reinicie no menu de boot novamente e selecione o item correto lá, e não o item legacy-mode.
+            Se o diretório não existir, o sistema pode ser inicializado no modo BIOS ou CSM.
+            <br><br><hr><br>
+            <span class="here">Conexão com a Internet</span>
+            <br><br>
+            Primeiro, se você não souber o nome do seu dispositivo sem fio, liste todos os dispositivos Wi-Fi:
+            <br><br>
+            <span class="command"># device list</span>
+            <br><br>
+            Em seguida, para procurar redes:
+            <br><br>
+            <span class="command"># station dispositivo scan</span>
+            <br><br>
+            Você pode listar todas as redes disponíveis:
+            <br><br>
+            <span class="command"># station dispositivo get-networks</span>
+            <br><br>
+            Por fim, para conectar-se a uma rede:
+            <br><br>
+            <span class="command"># station dispositivo connect SSID</span>
+            <br><br>
+            Se uma senha for necessária, você será solicitado a digitá-la. Como alternativa, você pode fornecer como argumento da linha de comando:
+            <br><br>
+            <span class="command"># station nome_dispositivo connect nome_da_rede senha</span>
+            <br><br>
+            Antes de instalar o Arch Linux, verifique se o computador está conectado à Internet.
+            <br><br>
+            <span class="command"># ping -c 3 archlinux.org</span>
+            <br><br>
+            Atualize o relógio do sistema.
+            <br><br>
+            <span class="command"># timedatectl set-ntp true </span>
+            <br><br>
+            <span class="here">Particionamento de Disco</span> 
+            <br><br>
+            Estou usando GPT em vez de MBR (há muitas vantagens de GPT sobre MBR), o Arch vem com algumas ferramentas de particionamento, 
+            mas para GPT 'cgdisk' é usado. No entanto, se você estiver com uma inicialização dupla com o Windows ou se você já tiver outra distro instalada, 
+            ou por algum motivo, você deseja manter o MBR, use o cfdisk em vez do cgdisk. O procedimento é o mesmo, basta executar o comando cfdisk em vez do cgdisk.
+            <br><br>
+            <span class="command"># cfdisk /dev/sda</span>
+            <br><br>
+            <span class="here">Particionamento de disco BIOS</span>
+        </h2>
+        <img src="../../assets/img/particionamento-bios.png" alt="">
+        <br><br>
+        <img src="../../assets/img/particionamento-bios2.png" alt="">
+        <br><br>
+        <hr><br>
+        <h2 class="intro">
+            <span class="here"><span class="saiba_mais">◎</span> Particionamento de Disco (UEFI)</span> 
+        </h2>
+        <img src="../../assets/img/particionamento-uefi.png" alt="">
+        <br><br>
+        <img src="../../assets/img/particionamento-uefi2.jpg" alt="">
+        <br><br>
+        <hr><br>
+        <h2 class="intro">
+            <span class="here">Formatando o disco</span> 
+            <br><br>
+            Se o disco rígido estiver pronto e particionado de acordo com as suas necessidades, pode movê-lo formatando-o. 
+            <br><br>
+            Formatar a partição sda1 (/root)
+            <br><br>
+            <span class="command"># mkfs.ext4 -L ROOT /dev/sda1</span>
+            <br><br>
+            Ativar a partição SWAP
+            <br><br>
+            <span class="command"># mkswap  -L SWAP /dev/sda2</span>
+            <br><br>
+            <span class="command"># swapon /dev/sda2</span>
+            <br><br>
+            Formatar a partição sda3(/home)
+            <br><br>
+            <span class="command"># mkfs.ext4 -L HOME /dev/sda3</span>
+            <br><br><hr><br>
+            <span class="saiba_mais">◎</span> Formate a partição sda1 (/boot) (UEFI a partição /boot será sda1 segundo a foto)
+            <br><br>
+            <span class="command"># mkfs.fat -F32 -n BOOT /dev/sda1</span>
+            <br><br>
+            ( Caso dê algum erro instale o pacote <span class="command"># pacman -S dosfstools</span> )
+            <br><br><hr><br>
+            <span class="here">Montagem das partições</span>
+            <br><br>
+            Antes de podermos baixar e instalar os pacotes base do Arch Linux precisamos montar nossas partições 
+            e mudar para o nosso diretório root. Afinal, este é onde vamos instalar o Arch Linux.
+            <br><br>
+            Montagem da partição root e home
+            <br><br>
+            <span class="command"># mount /dev/sda1 /mnt</span>
+            <br><br>
+            <span class="command"># mkdir /mnt/home</span>
+            <br><br>
+            <span class="command"># mount /dev/sda3 /mnt/home</span>
+            <br><br><hr><br>
+            <span class="saiba_mais">◎</span> <span class="here">Agora monte a partição: (/boot) (UEFI)</span>
+            <br><br>
+            <span class="command"># mkdir -p /mnt/boot/efi && mount /dev/sda1 /mnt/boot/efi</span>
+            <br><br>
+            Verifique as partições com este comando
+            <br><br>
+            <span class="command"> # lsblk /dev/sda</span>
+            <br><br><hr><br>
+            <span class="here">Escolha o espelho de download</span>
+            <br><br>
+            Instale o pacote pacman-contrib, que pode ser usado para classificar os espelhos 
+            de acordo com suas velocidades de conexão e abertura para aproveitar o uso do espelho local mais rápido.
+            <br><br>
+            <span class="command"> # pacman -S pacman-contrib</span>
+            <br><br>
+            Faça o backup do /etc/pacman.d/mirrorlist existente: 
+            <br><br>
+            <span class="command"># cp /etc/pacman.d/mirrorlist  /etc/pacman.d/mirrorlist.backup</span>
+            <br><br>
+            Opcionalmente, execute a seguinte linha sed para descomentar todos os espelhos:
+            <br><br>
+            <span class="command"># sed -i 's/^#Server/Server/' /etc/pacman.d/mirrorlist.backup</span>
+            <br><br>
+            Finalmente, classifique os espelhos, aqui com o operando -n 6 para emitir apenas 
+            os 6 espelhos mais rápidos: ( Isso pode demorar um pouco )
+            <br><br>
+            <span class="command"># rankmirrors -n 6 /etc/pacman.d/mirrorlist.backup > /etc/pacman.d/mirrorlist</span>
+            <br><br>
+            Instalar os pacotes base do Arch Linux
+            <br><br>
+            <span class="command"># pacstrap -i /mnt base base-devel linux linux-firmware nano dhcpcd</span>
+            <br><br>
+            <span class="here">Configurar fstab</span>
+            <br><br>
+            Para configurar fstab (tabela de sistemas de arquivos) execute:
+            <br><br>
+            <span class="command"># genfstab -U  /mnt >> /mnt/etc/fstab</span>
+            <br><br>
+            Você deve sempre verificar se a entrada fstab está correta ou não, que será capaz de inicializar em seu sistema. 
+            Para verificar a entrada fstab, execute:
+            <br><br>
+            <span class="command"># cat /mnt/etc/fstab</span>
+            <br><br>
+            Se tudo estiver OK você deve ver o root e o home montado.
+            <br><br>
+            Agora é hora de mudar para o diretório root recém-instalado para configurá-lo.
+            <br><br>
+            <span class="command"># arch-chroot /mnt</span>
+            <br><br>
+            <span class="here">Configurar KEYMAP</span>
+            <br><br>
+            A variável KEYMAP é especificada no arquivo /etc/vconsole.conf. 
+            Ele define qual layout de teclado, será usado nos consoles virtuais. Execute este comando:
+            <br><br>
+            <div class="command"># echo -e "KEYMAP=br-abnt2\nFONT=Lat2-Terminus16\nFONT_MAP=" > /etc/vconsole.conf</div>
+            <br><br>
+            <span class="here">Configurações de idioma e fuso horário</span>
+            <br><br>
+            Agora execute:
+            <br><br>
+            <span class="command"># locale-gen</span>
+            <br><br>
+            <span class="command"># echo LANG=pt_BR.UTF-8 > /etc/locale.conf</span>
+            <br><br>
+            <span class="command"># export LANG=pt_BR.UTF-8</span>
+            <br><br>
+            Para ver todos os fusos horários disponíveis da América:
+            <br><br>
+            <span class="command"># ls /usr/share/zoneinfo/America</span>
+            <br><br>
+            Agora você pode configurar a sua zona (No meu caso São Paulo):
+            <br><br>
+            <span class="command"># ln -sf /usr/share/zoneinfo/America/Sao_Paulo  /etc/localtime</span>
+            <br><br>
+            Vamos agora configurar o relógio do hardware, apenas no caso de termos uma data errada:
+            <br><br>
+            <span class="command">#  hwclock -w -u</span>
+            <br><br>
+            <div class="div_command">echo -e "NTP=0.arch.pool.ntp.org 1.arch.pool.ntp.org 2.arch.pool.ntp.org 3.arch.pool.ntp.org`
+            `\nFallbackNTP=0.pool.ntp.org 1.pool.ntp.org 0.fr.pool.ntp.org" >> /etc/systemd/timesyncd.conf</div>
+            <br><br>
+            <span class="here">Configurar o repositório</span>
+            <br><br>
+            Com este comando habilitamos o repositório multlib:
+            <br><br>
+            <span class="command"># sed -i  '/multilib\]/,+1  s/^#//'  /etc/pacman.conf</span>
+            <br><br>
+            <span class="command"># pacman -Sy</span>
+            <br><br>
+            <span class="here">Defina seu nome de host</span>
+            <br><br>
+            <span class="command"># echo noisyarch > /etc/hostname</span>
+            <br><br>
+            Em seguida, edite /etc/hosts para se parecer com isto:
+            <br><br>
+            127.0.0.1    localhost
+            <br>
+            127.0.1.1    noisyarch.localdomain noisyarch
+            <br><br>
+            <span class="command"># nano /etc/hosts</span>
+            <br><br>
+            <span class="here">Alterar DNS:</span>
+            <br><br>
+            <span class="command"># nano /etc/resolv.conf</span>
+            <br><br>
+            nameserver 8.8.8.8
+            <br>
+            nameserver 8.8.4.4
+            <br><br>
+            <span class="here">Configurando a Conexão</span>
+            <br><br>
+            <span class="command"># ip link</span> ou <span class="command">ls /sys/class/net</span>
+            <br><br>
+            <span class="command"> # systemctl enable dhcpcd</span> <span class="here">(rede cabeada)</span>
+            <br><br>
+            <span class="here">Wi-fi (Instalar componentes Wi-fi)</span>
+            <br><br>
+            <span class="command"># pacman -S wpa_supplicant dialog iw networkmanager</span>
+            <br><br>
+            <span class="command"># systemctl enable NetworkManager</span>
+            <br><br>
+            <span class="here">Criar Usuário(s)</span>
+            <br><br>
+            Exemplo: "useradd -m -g [initial_group] -G [additional_groups] -s [login_shell] [username]"
+            <br><br>
+            <span class="command"># useradd -m -g users -G log,sys,wheel,rfkill,dbus -s /bin/bash username</span>
+            <br><br>
+            Em seguida, forneça a senha para este novo usuário executando:
+            <br><br>
+            <span class="command"># passwd username</span>
+            <br><br>
+            Não se esqueça de definir também a senha para o usuário root:
+            <br><br>
+            <span class="command"># passwd</span>
+            <br><br>
+            Instale o bash-completion  para que o Arch complete os comandos dos nomes dos pacotes.
+            <br><br>
+            <span class="command"># pacman -S bash-completion</span>
+            <br><br>
+            Permitir que os usuários no grupo wheel, sejam capazes de executar tarefas administrativas com o sudo:
+            <br><br>
+            <span class="command"># sed -i '/%wheel ALL=(ALL) ALL/s/^#//' /etc/sudoers</span>
+            <br><br>
+            <span class="here">Instalar e configurar o boot-loader (BIOS)</span>
+            <br><br>
+            <span class="command"># mkinitcpio -P</span>
+            <br><br>
+            <span class="command"># pacman -S grub efibootmgr</span>
+            <br><br>
+            <span class="command"># grub-install --target=i386-pc --recheck /dev/sda</span>
+            <br><br>
+            <span class="command"># pacman -S os-prober</span> (Se você estiver inicializando em dual boot)
+            <br><br>
+            <span class="command"># pacman -S intel-ucode</span> (Se você tiver uma CPU Intel)
+            <br><br>
+            <span class="command"># pacman -S amd-ucode</span> (Se você tiver uma CPU AMD)
+            <br><br>
+            <span class="command"># grub-mkconfig -o /boot/grub/grub.cfg</span>
+            <br><br><hr><br>
+            <span class="here"><span class="saiba_mais">◎</span> Instalar e configurar o boot-loader (UEFI)</span>
+            <br><br>
+            <span class="command"># mkinitcpio -P</span>
+            <br><br>
+            <span class="command"># pacman -S grub</span>
+            <br><br>
+            <div class="command"># grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=grub --recheck</div>
+            <br><br>
+            <span class="command"># pacman -S os-prober</span> (Se você estiver inicializando em dual boot)
+            <br><br>
+            <span class="command"># pacman -S intel-ucode</span> (Se você tiver uma CPU Intel)
+            <br><br>
+            <span class="command"># pacman -S amd-ucode</span> (Se você tiver uma CPU AMD)
+            <br><br>
+            <span class="command"># grub-mkconfig -o /boot/grub/grub.cfg</span>
+            <br><br><hr><br>
+            <span class="here">Desmontar as partições e reiniciar:</span>
+            <br><br>
+            <span class="command"># exit</span>
+            <br><br>
+            <span class="command"># umount -R /mnt</span>
+            <br><br>
+            <span class="command"># reboot</span>
+        </h2>
+        <br>
+        <h2 class="saiba_mais">Instalação do <span class="white">Arch Linux</span> concluída!</h2>
+        <h2>Faça o <a id="faca_login" class="here" href="../../login.html">login</a> para ter acesso à parte 2</h2>
+        <br><hr>
+        <h1 class="footer"><b class="arch">developed by</b> 
         <b><a class="noisyboy" href="https://github.com/noisyboy-official" target="_blank">noisyboy</a></b></h1>
     </div>
 </body>

@@ -22,8 +22,8 @@ var mySqlConfig = {
     host: "localhost",
     user: "root",
     database: "NoisyArch",
-//    password: "bandtec"
-    password: "Elizeu12345"
+    password: "bandtec"
+//    password: "Elizeu12345"
 };
 
 function executar(instrucao) {
